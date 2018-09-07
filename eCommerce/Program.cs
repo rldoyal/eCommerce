@@ -172,7 +172,7 @@ namespace eCommerce
                     Console.WriteLine(" MultiCellBuffer Constructor - n > N ..");
             }
         }
-
+         
         public void setOneCell(String data)
         {
             write_pool.WaitOne();
