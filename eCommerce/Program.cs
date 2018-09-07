@@ -142,30 +142,30 @@ namespace eCommerce
 
     public class MultiCellBuffer
     {
-        public string[] bufferString;
+        public String[] buffers;
         private const int N = 2;
         private int n; // number of cells
         private int elementCount;
-        private int static Semaphore write_pool;
-        private int static Semaphore read_pool;
+        private static Semaphore write_pool;
+        private static Semaphore read_pool;
 
         // constructor for class
-        public MulitCellBuffer(int n)
+        public void MulitCellBuffer(int n)
         {
             lock (this) // we want no interruptiongs
             {
-                elemnetCount = 0;
-
+                elementCount = 0;
+                
                 if (n <= N)
                 {
                     this.n = n;
                     write_pool = new Semaphore(n, n);
                     read_pool = new Semaphore(n, n);
-                    bufferString = new string[n];
+                    buffers = new String[n];
 
                     for (int i = 0; i < n; i++)
                     {
-                        bufferString[i] = string.Empty();
+                        buffers[i] = String.Empty;
                     }
                 }
                 else
@@ -173,7 +173,7 @@ namespace eCommerce
             }
         }
 
-        public void setOneCell(string data)
+        public void setOneCell(String data)
         {
             write_pool.WaitOne();
 
@@ -186,9 +186,9 @@ namespace eCommerce
 
                 for (int i = 0; i < n; i++)
                 {
-                    if (bufferString[i].isNullorEmpty()) // make sure empty
+                    if (buffers[i].()) // make sure empty
                     {
-                        bufferString[i] = data;
+                        buffers[i] = data;
                         elementCount++;
                         i = n;
                     }
@@ -198,9 +198,9 @@ namespace eCommerce
             }
         }
 
-        public string getOneCell()
+        public String getOneCell()
         {
-            string outStr = String.Empty();
+            string outStr = String.Empty;
             read_pool.WaitOne();
 
             lock (this)
@@ -209,14 +209,14 @@ namespace eCommerce
                 {
                     Monitor.Wait(this);
                 }
-
+                
                 for (int i = 0; i < n; i++)
                 {
-                    if (!bufferString[i].isNullorEmpty()) // make sure cell has data
+                    if (!IsNullorEmpty(buffers[i])) // make sure cell has data
                     {
-                        outStr = bufferString[i];
-                        bufferString.Empyt();
-                        elementCountii;
+                        outStr = buffers[i];
+                        buffers[i] = String.Empty;
+                        elementCount--;
                         i = n;
                     }
                 }
@@ -226,7 +226,10 @@ namespace eCommerce
             return outStr;
         }
 
-
+        private bool IsNullorEmpty(string v)
+        {
+            throw new NotImplementedException();
+        }
     }
     public class ChickenFarm
     {
