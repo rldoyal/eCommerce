@@ -104,7 +104,7 @@ namespace eCommerce
             return bufferStr;
         }
     }
-
+     
     public class EncodeDecode
     {
         // encoder takes an object and returns a string to the retailer
