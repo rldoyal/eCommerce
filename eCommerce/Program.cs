@@ -212,7 +212,8 @@ namespace eCommerce
                 
                 for (int i = 0; i < n; i++)
                 {
-                    if (!IsNullorEmpty(buffers[i])) // make sure cell has data
+                   
+                    if (!string.IsNullOrEmpty(buffers[i])) // make sure cell has data
                     {
                         outStr = buffers[i];
                         buffers[i] = String.Empty;
@@ -226,11 +227,27 @@ namespace eCommerce
             return outStr;
         }
 
-        private bool IsNullorEmpty(string v)
+    }
+
+    public class Orderprocessing
+    {
+        public static event orderProcessedEvent orderProcessed; // event triggered whe a new order has beeen processed
+        public static void processrOrder( OrderObject orderObj, Int32 unitPrice )
         {
-            throw new NotImplementedException();
+            long cardNo = orderObj.getCardNo();
+            if ( (cardNo <= 9999 && cardNo >= 9000))
+            {
+                Int32 paymentAmount = Convert.ToInt32(1.10 * (unitPrice * orderObj.getAmt()));  // price * quanity + tax(10%)
+                orderProcessed(orderObj.getID, paymentAmount, unitPrice, orderObj.getAmt());
+            }
+            else
+            {
+                Console.WriteLine("INVALID CARD.....  {0}", cardNo);
+            }
         }
     }
+
+
     public class ChickenFarm
     {
         static Random rng = new Random();
